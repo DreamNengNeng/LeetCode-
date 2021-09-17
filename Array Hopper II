@@ -1,0 +1,39 @@
+89. Array Hopper II
+Medium
+Given an array A of non-negative integers, you are initially positioned at index 0 of the array. A[i] means the maximum jump distance from index i (you can only jump towards the end of the array). Determine the minimum number of jumps you need to reach the end of array. If you can not reach the end of the array, return -1.
+
+Assumptions
+
+The given array is not null and has length of at least 1.
+Examples
+
+{3, 3, 1, 0, 4}, the minimum jumps needed is 2 (jump to index 1 then to the end of array)
+
+{2, 1, 1, 0, 2}, you are not able to reach the end of array, return -1 in this case.
+
+https://leetcode.com/problems/jump-game-ii/
+
+class Solution {
+    public int jump(int[] nums) {
+
+    //base case
+        int[] minJump = new int[nums.length]; //M[i] represents the minimum steps to jump to the end
+        minJump[0] = 0; //但站在最后一个index上面，那么只需要跳 0 步
+        
+        for (int index = 1; index < nums.length; index++) { 
+            minJump[index] = -1;
+           for (int j = index - 1; j>= 0; j--) {// j = index -1 就可以得到当前index的前一位
+               if (j + nums[j] >= index  && minJump[j] != -1) { //这一步说明 从 j 一定可以跳到 i 
+                  //当满足了 从 j 一定可以跳到 i , 我们再来找最小步数
+                   if (minJump[index] == -1 || minJump[index] > minJump[j] + 1) {
+                       minJump[index] = minJump[j] + 1; //这一点也很好理解就是比 i 前面的一位 index 多一步
+                   }
+                }
+              
+             }
+           }
+        return minJump[nums.length-1];
+            
+            
+        }
+    }
