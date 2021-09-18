@@ -1,0 +1,28 @@
+https://leetcode.com/problems/maximum-subarray/submissions/
+class Solution {
+    public int maxSubArray(int[] nums) {
+    // 前面加起来大于0， 就继承； 如果前面加起来为负数，就另起炉灶
+ 
+        //base case
+        int curMax = nums[0];
+        int result = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            curMax = Math.max(nums[i], curMax+nums[i]);
+            result = Math.max(result, curMax);
+            
+        }
+        return result;
+    }
+}
+
+//  [-2,                        1, -3,    4,-1,2,1,-5,4]
+//   0                          1   2     3  4 5 6  7 8 
+// curMax = -2
+// i = 1                      curMax=  max(1, -1)  = 1, result = max(-2, 1) = 1
+// i = 2                      curMax = max(-3, -2) = -2 , result = max(-2, 1) = 1
+// i = 3                      curMax = max(4, 2) = 4, result = max(1,4) = 4
+// i = 4                      curMax = max(-1, 3) = 3, result = max(4,3) = 4
+// i = 5                      curMax = max(2, 5) = 5 , result = max(5,4) = 5
+// i = 6                      curMax = max（1,6）= 6， result = max (6, 5) = 6
+// i = 7                      curMax = max (-5, 1) = 1, result = max(6,1) = 6
+// i = 8,                     curMax = max (4, 5) = 5, result = max （5， 6） = 6
