@@ -1,0 +1,22 @@
+https://leetcode.com/problems/longest-substring-without-repeating-characters/solution/
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+       Set<Character> distinct = new HashSet<>();
+        int slow = 0;
+        int fast = 0;
+        int longest = 0;
+        while (fast < s.length()) {
+            if (distinct.contains(s.charAt(fast))) { //sliding window 
+                distinct.remove(s.charAt(slow++));
+            }
+            else {
+                distinct.add(s.charAt(fast++));
+                longest = Math.max(longest, fast-slow);
+            }
+        }
+        return longest; 
+    }
+}
+
+//TC: O(n+d) where n is the length of the input string and d is number of characters in input string alphbet
+//SC: O(d)
