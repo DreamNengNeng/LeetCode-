@@ -1,0 +1,41 @@
+https://leetcode.com/problems/string-to-integer-atoi/submissions/
+
+class Solution {
+    public int myAtoi(String s) {
+        int index = 0; 
+        int sign = 1;
+        int total = 0;
+        //corner case: 1. empty string
+        if (s.length() == 0) {
+            return 0;
+        }
+        //remove spaces
+        while (index < s.length() && s.charAt(index)  == ' ' ) {
+            index++;
+        }
+        // handle signs
+        if(index < s.length() && (s.charAt(index) == '+' || s.charAt(index) == '-')) {
+            sign = s.charAt(index) == '+' ? 1 : -1;
+            index++;
+        }
+        // convert number and avoid overflow
+        while (index < s.length()) {  //if s = 42, then digit = 4 - 0 = 4
+            int digit = s.charAt(index) - '0';  //ASCII/ 
+            if (digit < 0 || digit > 9) {
+                break;
+            }
+            //check if total will be overflow after 10 times and add digit
+            if (Integer.MAX_VALUE/10 < total || Integer.MAX_VALUE/10 == total && Integer.MAX_VALUE % 10  < digit) {
+             return sign == 1? Integer.MAX_VALUE : Integer.MIN_VALUE;
+                
+            }
+            total = 10 * total + digit; //total = 10 * 0 + 4 = 4 , index = 0; total = 4*10 + 2 = 42
+            index++; //index++ = 1 
+        }
+        
+        return total * sign; 
+    }
+}
+
+//TC: O(n)
+//SC: O(1)
