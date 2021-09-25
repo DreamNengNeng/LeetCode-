@@ -1,0 +1,23 @@
+https://leetcode.com/explore/interview/card/amazon/76/array-and-strings/2963/
+
+class Solution {
+    public int maxArea(int[] height) {
+        int slow = 0;
+        int fast = height.length - 1;
+        int max = 0;
+        while (slow < fast){
+        if (height[slow] < height[fast]) {
+            max = Math.max(max, height[slow] * (fast - slow));
+            slow++;
+        }
+        else {
+            max = Math.max(max, height[fast] * (fast-slow));
+            fast--;
+        }
+       }
+       return max;  
+   }
+}    
+
+//SC: O(n)
+//TC: O(1)
