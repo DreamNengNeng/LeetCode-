@@ -1,0 +1,42 @@
+https://leetcode.com/problems/3sum/submissions/
+
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        //corner case
+        List<List<Integer>> res = new ArrayList<>();
+        if (nums == null || nums.length < 3) {
+            return res;
+        }
+        Arrays.sort(nums);
+        for (int i = 0 ; i < nums.length && nums[i] <= 0; i++) { 
+            if (i == 0 || nums[i-1] != nums[i] ) {
+                twoSumII(nums, i, res);
+            }
+        }
+        return res;
+    }
+     void twoSumII(int[] nums, int i, List<List<Integer>> res) {
+         int lo= i + 1;
+         int hi = nums.length - 1;
+         while (lo < hi) {
+             int sum = nums[i] + nums[lo] + nums[hi];
+             if (sum < 0) {
+                 lo++;
+             }
+             else if (sum > 0) {
+                 hi--;
+             }
+             else {
+                 res.add(Arrays.asList(nums[i], nums[lo++], nums[hi--]));
+                 while (lo < hi && nums[lo] == nums[lo-1]) {
+                     lo++;
+                 }
+             }
+         }
+     }
+    
+    
+}    
+//Time complexity : O(n^2) - twoSumII is O(n) and we call it n times; Besides sorting the array takes O(nlogn), so total is (n^2 + n *logn)
+// SC: O(n)
+      
