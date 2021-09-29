@@ -1,0 +1,23 @@
+https://leetcode.com/explore/interview/card/amazon/76/array-and-strings/2968/
+class Solution {
+    public int strStr(String haystack, String needle) {
+        //An empty string is represented as "". It is a character sequence of zero characters. A null string is represented by null. It can be described as the absence of a string instance.
+      if (haystack == null || needle == null) {
+          return -1;
+      }
+        int l1 = haystack.length();
+        int l2 = needle.length();
+      
+        for (int i = 0; i <= l1 - l2; i++) { //第一个例子： i 的取值： 0,1,2,3
+            int count = 0;
+            while (count < l2 && haystack.charAt(i+count) == needle.charAt(count)){
+                count++;
+            }
+            if (count == l2) {
+                return i;
+            }
+        }
+        return -1;
+       
+    }
+}    
