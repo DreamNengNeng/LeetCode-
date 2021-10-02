@@ -1,0 +1,66 @@
+https://leetcode.com/problems/minimum-window-substring/
+
+class Solution { //sliding window
+    public String minWindow(String s, String t) {
+        //Assumptions: both s and t are not null 
+        //corner case
+        int m = s.length();
+        int n = t.length();
+        if (m == 0 || n == 0 | m < n) {
+            return "";
+        }
+        //Dictionary which keeps a count of all the unique characters in t
+        Map<Character, Integer> dictT = new HashMap<>();
+        //  distinct character : frequency
+        for (int i = 0; i < n; i++) {
+            int count = dictT.getOrDefault(t.charAt(i),0);
+            dictT.put(t.charAt(i), count + 1); 
+        }
+        
+        // # of unique characters in t which need to be present in the desired window
+        int required = dictT.size(); //一旦找到 valid 的Substring, 我们就把这个Substring的起始点往右移动一位， （保持这个Substring的结尾不变）， 看这个新的 Substring是否 valid; 如果不valid, 那么我们就要把Substring 的结尾往后移动一位，查看。
+        int slow = 0;
+        int minLen = Integer.MAX_VALUE;
+        int matchCount = 0;
+        int index = 0; // sliding window starting point
+        for (int fast = 0 ; fast < m; fast++) {
+            char word = s.charAt(fast);
+            Integer count = dictT.get(word); // check the word from s appreas in string t or not?
+            if (count == null) {
+                continue;
+            }
+           
+                dictT.put(word, count - 1);
+                //
+                if (count == 1) {
+                    // 1-> 0 
+                    matchCount++;
+                }
+            while (matchCount == dictT.size()) { // means we found the valid substring. 
+                // we find a valid substring， then we need to find the min length substring
+                if (fast - slow + 1 < minLen) {
+                    minLen = fast - slow + 1;
+                    index = slow;
+                }
+                char leftmost = s.charAt(slow++);
+                Integer leftmostC = dictT.get(leftmost); // 看看leftmost 这个字母是否在 t 中出现过没有
+                if (leftmostC == null) {
+                    continue;
+                }
+                dictT.put(leftmost, leftmostC + 1); 
+                if (leftmostC == 0) {
+                    // 0 -> 1
+                    matchCount--;
+                }
+                
+            }
+            
+        }
+        
+      return minLen == Integer.MAX_VALUE ? "" : s.substring(index, index + minLen);  
+        
+  }
+}     
+
+//TC: O(m)
+//SC: O (n)
