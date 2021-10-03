@@ -1,0 +1,28 @@
+https://leetcode.com/problems/product-of-array-except-self/
+
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int length = nums.length;
+        int[] res = new int[length]; 
+        int[] prefix = new int[length];
+        int[] suffix = new int[length];
+        prefix[0] = 1;
+        
+        for (int i = 1; i < nums.length;i++) { //这里把 i 从 1 开始， 后面就可以使用 i- 1, 保证不会out of bound
+            prefix[i] = nums[i-1] * prefix[i-1];
+        }
+        suffix[nums.length - 1] = 1;  
+        for (int j = nums.length - 2; j>= 0; j--){ //同上面 i 的原理： j是从nums.length - 2 开始
+                suffix[j] = suffix[j+1] * nums[j+1];
+        }
+        for (int i = 0; i < length; i++) { //最后这里乘起来的步骤，是我没有想到的。 非常巧妙。如果下次看，不太明白，可以考虑看leetcode 的视频
+            res[i] = prefix[i] * suffix[i];
+        }
+        
+        
+        return res;
+    }
+}
+
+//Time Complexity: O(n) : n is the length of input array
+//Space: o(2n) --> O(n)
