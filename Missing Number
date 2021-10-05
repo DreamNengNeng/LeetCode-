@@ -1,0 +1,22 @@
+https://leetcode.com/problems/missing-number/solution/
+class Solution {
+    public int missingNumber(int[] nums) {
+        Arrays.sort(nums);
+    
+        int n = nums.length; //n=2
+        if (nums[n-1] != n) {
+            return n;
+        }
+        else if (nums[0] != 0) {
+            return 0;
+        }
+        for (int i = 1; i < n; i++) {
+            int expectNum = nums[i-1] + 1;
+            if (nums[i] != expectNum) {
+                return expectNum;
+            }
+        }
+       
+        return -1;
+    }
+}
