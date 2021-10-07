@@ -1,0 +1,41 @@
+https://leetcode.com/explore/interview/card/amazon/76/array-and-strings/481/
+
+class Solution {
+    private final String[] lessThan = {"", "One", "Two", "Three","Four", "Five","Six", "Seven","Eight", "Nine","Ten", "Eleven","Twelve", "Thirteen", "Fourteen","Fifteen", "Sixteen", "Seventeen","Eighteen","Nineteen"};
+    private final String[] tens = {"", "Ten","Twenty","Thirty", "Forty","Fifty","Sixty", "Seventy","Eighty","Ninety"};
+    private final String[] thousands = {"", "Thousand", "Million", "Billion"};
+    
+    public String numberToWords (int n) {
+        if (n == 0) {
+            return "Zero";
+        }
+        int i = 0;
+        String result = "";
+        while (n > 0) {
+            if (n % 1000 != 0) {
+                result = helper (n % 1000) + thousands[i] + " " + result; // do not forgot about the space
+              
+            }
+              i++;
+              n /= 1000; // 因为三位跳一个级， 所以 是 除以 1000。 
+        }
+        return result.trim(); //去掉前面和后面多余的space
+    }
+    
+    private String helper(int n) {
+        if (n ==0) {
+            return "";
+        }
+        else if (n < 20) {
+            return lessThan[n] + " ";
+            
+        }
+        else if (n < 100) { //20 - 99
+            return tens[n/10] + " " + helper(n % 10);
+        }
+        else { // 100 - 999
+            return lessThan[n/100] + " Hundred " + helper(n % 100);
+        }
+    }
+    
+}
