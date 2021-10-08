@@ -1,0 +1,32 @@
+https://leetcode.com/problems/valid-parentheses/
+
+class Solution {
+    private static final Map<Character, Character> map = Map.of('(',')','{','}','[',']');
+    public boolean isValid(String s) {
+        //DFS : when we need to find all the possibilites
+        //Depth First Search + stack : we can peek the top and check
+        // 看到左边， 就需要有同类型右边的出现； 左边要比右边先出现
+        // and we need to remember it 
+        Stack<Character> stack = new Stack<>();
+        for (char c : s.toCharArray()) {
+            if (map.containsKey(c)) { // 这里面 key 都是 左括号
+                stack.push(c); //我们就把左括号加入stack 里面
+            }
+            else { //我们看到的不是key, 即我们看到得都是右括号
+                if (stack.isEmpty()) { 
+                    return false; //没法匹配右括号， return false
+                }
+                char open = stack.pop(); //如果我的stack 不为空
+                if (map.get(open) != c) {
+                    return false;
+                }
+            }
+
+        }
+        
+        return stack.isEmpty();
+    }
+}
+
+//TC: O(n) : n is the number of character in the string
+//SC: O(n)
