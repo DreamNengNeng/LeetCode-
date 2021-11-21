@@ -1,0 +1,78 @@
+Given an array of integers, sort the elements in the array in ascending order. The quick sort algorithm should be used to solve this problem.
+
+Examples
+
+{1} is sorted to {1}
+{1, 2, 3} is sorted to {1, 2, 3}
+{3, 2, 1} is sorted to {1, 2, 3}
+{4, 2, -3, 6, 1} is sorted to {-3, 1, 2, 4, 6}
+Corner Cases
+
+What if the given array is null? In this case, we do not need to do anything.
+What if the given array is of length zero? In this case, we do not need to do anything.
+
+
+public class Solution {
+  //当 A 执行完毕以后，就开始分别sort 比pivot 小， 和比pivot大的那两个部分
+  public int[] quickSort(int[] array) {
+    //corner case
+    if (array == null || array.length == 0) {
+      return array;
+    }
+    quickSort(array, 0, array.length -1);
+    return array;
+  }
+  public void quickSort(int[] array, int left, int right) { // [left, right] 闭区间, 这里quickSort 是recursion, 因为它call 了自己
+   //base case
+      if (left >= right) {  //base: 当left 大于right, 说明没有元素剩下了； 当left == right, 就是一个元素， 直接return 
+        return; 
+      }
+
+      int pivotPos = partition(array, left, right);
+      quickSort(array,left,pivotPos - 1);
+      quickSort(array,pivotPos+1, right);
+    
+  }
+// space complexity: recursion = 因为recursion 没有用额外的空间，都是在原本的array 里进行 (in place， averagely， 总共有logn 层（对半分）= log 次recursion， 所以， recurion = log n
+// 如果在每次recursion创建一个新的array, 那么space complexity (average) 就会变成： O(n)
+// space complexity: worst case: 你每次都要做 n + n-1 + n-2 + ... + 1 次，那么就是O(n^2)
+
+//A : 以下步骤就完成了pivot 左边比pivot 小， pivot 右边比pivot 大
+  private int partition(int[] array, int left, int right) {
+    int pivotIndex = pivotIndex (left, right);
+    int pivot = array[pivotIndex];
+
+    swap(array, pivotIndex, right); //把pivot放在最右边
+    int leftBound = left;
+    int rightBound = right -1;  //-1 是因为最右边是pivot
+    while (leftBound <= rightBound) { //进入while loop 条件
+      if (array[leftBound] < pivot) {
+        leftBound++;
+      }
+      else if (array[rightBound] >= pivot) {  //这里过个例子就明白了
+        rightBound --;
+      }
+      else {
+        swap (array, leftBound, rightBound);
+        rightBound--;
+      }
+    }
+  
+     swap(array,leftBound,right);
+     return leftBound;
+
+  }
+
+  private int pivotIndex(int left, int right) {
+    return left + (int) (Math.random() * (right - left + 1)); //因为random生成得是double, 所以要强行把它变成int. 
+  }
+
+  private void swap (int[] array, int left, int right) {
+    int temp = array[left];
+    array[left] = array[right];
+    array[right]= temp;
+  }
+
+}  
+
+    
