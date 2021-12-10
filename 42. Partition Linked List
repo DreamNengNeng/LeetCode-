@@ -1,0 +1,48 @@
+Given a linked list and a target value T, partition it such that all nodes less than T are listed before the nodes larger than or equal to target value T. The original relative order of the nodes in each of the two partitions should be preserved.
+
+Examples
+
+L = 2 -> 4 -> 3 -> 5 -> 1 -> null, T = 3, is partitioned to 2 -> 1 -> 4 -> 3 -> 5 -> null
+
+/**
+ * class ListNode {
+ *   public int value;
+ *   public ListNode next;
+ *   public ListNode(int value) {
+ *     this.value = value;
+ *     next = null;
+ *   }
+ * }
+ */
+public class Solution {
+  public ListNode partition(ListNode head, int target) {
+    //corner case
+    if (head == null || head.next == null) {
+      return head;
+    }
+    ListNode small = new ListNode (0);
+    ListNode large = new ListNode (0);
+    ListNode curSmall = small;
+    ListNode curLarge = large;
+    while (head != null) {
+      if (head.value < target) {
+        curSmall.next = head;
+        curSmall = curSmall.next; 
+      } else {
+        curLarge.next = head;
+        curLarge = curLarge.next;
+      }
+      head = head.next; //因为不论是small 还是 large, 都需要移动head 到下一个位置，所以head = head.next可以写在外面。
+    }
+    //how to connect small and large partitions
+    curSmall.next = large.next; // 这里用得是curSmall, 就是我们找到的最后一个curSmall.
+    curLarge.next = null;  // we also need to un-link the last node in the large partition
+    return small.next;
+  }
+}
+//[2 -> 4 -> 3 -> 5 -> 1 -> null, T= 3]
+// cS   cL   cL   cL   cS
+//cS.next = 4  把1 --> 4 : 因为large的开头是4
+//[2 -> 1 -> 4 -> 3 -> 5-> null, T= 3]
+
+
