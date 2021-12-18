@@ -1,0 +1,53 @@
+Given an array that is initially stored in one stack, sort it with one additional stacks (total 2 stacks).
+
+After sorting the original stack should contain the sorted integers and from top to bottom the integers are sorted in ascending order.
+
+Assumptions:
+
+The given stack is not null.
+There can be duplicated numbers in the give stack.
+Requirements:
+
+No additional memory, time complexity = O(n ^ 2).
+
+public class Solution {
+  public void sort(LinkedList<Integer> s1) {
+   // sort in descending order and store result in the bottom part of input
+   if (s1 == null || s1.size() <= 1) {
+     return;
+   }
+   LinkedList<Integer> s2 = new LinkedList<Integer>();
+   sort(s1,s2);
+  }
+  private void sort(Deque<Integer> input, Deque<Integer> buffer) {
+   int preMax = Integer.MAX_VALUE;
+   while (input.peekFirst() < preMax) {
+     int curMax = Integer.MIN_VALUE;
+     int count = 0;
+     while (!input.isEmpty() && input.peekFirst() < preMax) {
+       int cur = input.pollFirst(); //栈顶的元素被poll 了出来
+       if (cur > curMax) {
+         curMax = cur;
+         count = 1;
+       }
+       else if (cur == curMax) {
+         count++;
+       }
+       buffer.offerFirst(cur); //把最大的元素先放进去
+     }
+     while (count --> 0) { //means count > 0 and count--
+       input.offerFirst(curMax);
+     }
+     while (!buffer.isEmpty()) {
+       int tmp = buffer.pollFirst(); //把buffer 中最小的元素先拿出来（最小的元素在栈顶）
+       if (tmp != curMax) {
+         input.offerFirst(tmp);
+       }
+     }
+     preMax = curMax;
+   }
+  }
+}
+//TC： o(n^2)
+//SC: o(1)
+
