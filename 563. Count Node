@@ -35,8 +35,8 @@ public class Solution {
     if (root == null) {
       return count;
     }
-    //subproblem: find the count of left subTree and right of subtree
-    //recursion rule
+    //subproblem: find the count of left subTree and right of subtree : f(root.left), f(root.right) 
+    //recursion rule : 
     countLeft = countNodes(root.left);
     countRight = countNodes(root.right);
     count = countLeft + countRight + 1; //1 is for root
