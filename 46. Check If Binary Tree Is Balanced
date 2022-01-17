@@ -1,0 +1,92 @@
+Check if a given binary tree is balanced. A balanced binary tree is one in which the depths of every node’s left and right subtree differ by at most 1.
+
+Examples
+
+        5
+
+      /    \
+
+    3        8
+
+  /   \        \
+
+1      4        11
+
+is balanced binary tree,
+
+        5
+
+      /
+
+    3
+
+  /   \
+
+1      4
+
+is not balanced binary tree.
+
+Corner Cases
+
+What if the binary tree is null? Return true in this case.
+How is the binary tree represented?
+
+We use the level order traversal sequence with a special symbol "#" denoting the null node.
+
+For Example:
+
+The sequence [1, 2, 3, #, #, 4] represents the following binary tree:
+
+    1
+
+  /   \
+
+ 2     3
+
+      /
+
+    4
+
+/**
+ * public class TreeNode {
+ *   public int key;
+ *   public TreeNode left;
+ *   public TreeNode right;
+ *   public TreeNode(int key) {
+ *     this.key = key;
+ *   }
+ * }
+ */
+public class Solution {
+  public boolean isBalanced(TreeNode root) {
+    //base case
+    if (root == null) {
+      return true;
+    }
+    //subproblem: isBalanced(root.left), isBalanced(root.right)
+    //recursion rule: isBalanced(root.left)is false-> return false; if isBalanced(root.right) is false ==> return false
+    //            right now, left and right subtree is balanced
+    //            next, let us check the height diff: |leftHeight - rightHeight| > 1 -> return false 
+    boolean left = isBalanced(root.left);
+    boolean right = isBalanced(root.right);
+    if (!left || !right) { // 等价于： left == false ||   right == false
+      return false;
+    }
+    if (Math.abs(findHeight(root.left) - findHeight(root.right)) > 1) {
+        return false;
+    }
+    return true;
+  }
+  public int findHeight (TreeNode root) {
+    int height = 0;
+    int leftHeight = 0;
+    int rightHeight = 0;
+    if (root == null) {
+      return height;
+    }
+    leftHeight = findHeight(root.left);
+    rightHeight = findHeight (root.right);
+    height = Math.max(leftHeight,rightHeight) + 1; 
+    return height; 
+  }
+}
